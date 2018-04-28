@@ -19,6 +19,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.dianping.viewinspector.MainActivity;
+import com.dianping.viewinspector.suspend.ViewUtils;
 
 
 class AttributeViewerView extends FrameLayout {
@@ -32,10 +33,10 @@ class AttributeViewerView extends FrameLayout {
     AttributeViewerView(Context context) {
         super(context);
 
-/*        outRect.left = 0;
+        outRect.left = 0;
         outRect.top = 0;
         outRect.right = ViewUtils.getScreenWidthPixels(context);
-        outRect.bottom = ViewUtils.getScreenHeightPixels(context);*/
+        outRect.bottom = ViewUtils.getScreenHeightPixels(context);
 
         selectionPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         selectionPaint.setColor(Color.parseColor("#8078909C"));
@@ -44,7 +45,7 @@ class AttributeViewerView extends FrameLayout {
         setWillNotDraw(false);
         setClickable(false);
 
-        //setBackgroundColor(Color.GREEN);
+        setBackgroundColor(Color.GREEN);
     }
 
     @Override

@@ -1,15 +1,12 @@
 package com.dianping.viewinspector.suspend.full;
 
 import android.content.Context;
-import android.graphics.PixelFormat;
-import android.os.Build;
-import android.provider.Settings;
-import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.widget.FrameLayout;
 
-import com.dianping.viewinspector.suspend.ViewUtils;
-import com.dianping.viewinspector.suspend.WindowManagerLayoutParamsUtils;
+import com.dianping.vi_lib.Hawkeye;
 
 
 public enum AttributeViewerManager {
@@ -34,50 +31,13 @@ public enum AttributeViewerManager {
      * @param context 必须为应用程序的Context.
      */
     public void createSmallWindow(final Context context) {
-        WindowManager windowManager = getWindowManager(context);
-
-        int screenWidth = ViewUtils.getScreenWidthPixels(context);
-        int screenHeight = ViewUtils.getScreenHeightPixels(context);
-        if (smallWindow == null) {
-            smallWindow = new AttributeViewerView(context);
-            if (smallWindowParams == null) {
-                smallWindowParams = new LayoutParams();
-                //在版本>24后，https://android-developers.blogspot.com/2016/12/welcoming-android-711-nougat.html
-                //在版本<19时，会遇到Toast类型无法进行交互
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT <= 23)
-                    smallWindowParams.type = LayoutParams.TYPE_TOAST;
-                else {
-                    WindowManagerLayoutParamsUtils.setType(smallWindowParams, LayoutParams.TYPE_PHONE);
-                }
-                smallWindowParams.format = PixelFormat.RGBA_8888;
-                smallWindowParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        | LayoutParams.FLAG_NOT_FOCUSABLE;
-                smallWindowParams.gravity = Gravity.START | Gravity.TOP;
-                smallWindowParams.width = screenWidth;
-                smallWindowParams.height = screenHeight;
-                smallWindowParams.x = 0;
-                smallWindowParams.y = 0;
-            }
+        if (smallWindow != null) return;
+        smallWindow = new AttributeViewerView(context);
+        View decorView = Hawkeye.getCurrentActivity().getWindow().getDecorView();
+        if (decorView instanceof FrameLayout) {
+            FrameLayout decor = (FrameLayout) decorView;
+            decor.addView(smallWindow);
         }
-
-        try {
-            if (Build.VERSION.SDK_INT > 24 && !Settings.canDrawOverlays(context)) {
-                smallWindow = null;
-//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-//                context.startActivity(intent);
-            } else
-                windowManager.addView(smallWindow, smallWindowParams);
-        } catch (WindowManager.BadTokenException e) {
-            smallWindow = null;//捕获异常后，重置为null，保证下次能够add。
-            e.printStackTrace();
-        } catch (IllegalStateException e) {//解决个案，模拟器中有时会出现 查看WindowManagerGlobal.addView()
-            // windowManager.removeView(smallWindow);
-            e.printStackTrace();
-        } catch (Exception e) {
-            smallWindow = null;
-            e.printStackTrace();
-        }
-
     }
 
     /**

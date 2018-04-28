@@ -50,6 +50,10 @@ public class Hawkeye {
         }
     };
 
+    public static Activity getCurrentActivity() {
+        return currentActivity;
+    }
+
     public static Application getApplication() {
         return sApplication;
     }
