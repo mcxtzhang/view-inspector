@@ -176,7 +176,11 @@ public class DebugSuspendView extends LinearLayout {
                         && Math.abs(yDownInScreen - yInScreen) < 3) {
                     openBigWindow();
                 }
-                AttributeViewerManager.INSTANCE.createSmallWindow(getContext());
+                if (AttributeViewerManager.INSTANCE.isWindowShowing()) {
+                    AttributeViewerManager.INSTANCE.removeSmallWindow(getContext());
+                } else {
+                    AttributeViewerManager.INSTANCE.createSmallWindow(getContext());
+                }
                 break;
             default:
                 break;

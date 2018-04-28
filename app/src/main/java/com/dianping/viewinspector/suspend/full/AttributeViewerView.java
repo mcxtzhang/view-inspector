@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.dianping.viewinspector.MainActivity;
+import com.dianping.vi_lib.Hawkeye;
 import com.dianping.viewinspector.suspend.ViewUtils;
 
 
@@ -45,7 +45,7 @@ class AttributeViewerView extends FrameLayout {
         setWillNotDraw(false);
         setClickable(false);
 
-        setBackgroundColor(Color.GREEN);
+        //setBackgroundColor(Color.GREEN);
     }
 
     @Override
@@ -66,9 +66,9 @@ class AttributeViewerView extends FrameLayout {
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            float x = event.getRawX();
-            float y = event.getRawY();
-            View touchTarget = findTarget(MainActivity.getActivity().getWindow().getDecorView(), x, y);
+            float x = event.getX();
+            float y = event.getY();
+            View touchTarget = findTarget(Hawkeye.getCurrentActivity().getWindow().getDecorView(), x, y);
 
             View newTarget;
             if (currentView == touchTarget) {
@@ -111,8 +111,8 @@ class AttributeViewerView extends FrameLayout {
 
     private void setTarget(View view) {
         currentView = view;
-        //getScreenLocation(view, outRect);
-        getTargetReact(view, outRect);
+        getScreenLocation(view, outRect);
+        //getTargetReact(view, outRect);
 
         dismissPopupIfNeeded();
 
@@ -126,6 +126,9 @@ class AttributeViewerView extends FrameLayout {
         final int height = getMeasuredHeight() / 2;
 //        final AttributeDetailView detailView = new AttributeDetailView(context);
 //        detailView.setTarget(view);
+        LinearLayout detailList = new LinearLayout(context);
+        detailList.setOrientation(LinearLayout.VERTICAL);
+
         LinearLayout line = new LinearLayout(context);
         TextView detailView = new TextView(view.getContext());
         final EditText et = new EditText(context);
@@ -139,7 +142,24 @@ class AttributeViewerView extends FrameLayout {
         }
         line.addView(detailView);
         line.addView(et);
-        final PopupWindow popupWindow = new PopupWindow(line, width, height);
+        detailList.addView(line);
+
+        LinearLayout line2 = new LinearLayout(context);
+        TextView detailView2 = new TextView(view.getContext());
+        final EditText et2 = new EditText(context);
+
+        if (view instanceof TextView) {
+            detailView2.setText("TextSize");
+            float textSize = ((TextView) view).getTextSize();
+            et2.setText(toSp(textSize)+"");
+        } else {
+            detailView2.setText("fasdas");
+        }
+        line2.addView(detailView2);
+        line2.addView(et2);
+        detailList.addView(line2);
+
+        final PopupWindow popupWindow = new PopupWindow(detailList, width, height);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#737373")));
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
@@ -148,10 +168,16 @@ class AttributeViewerView extends FrameLayout {
             public void onDismiss() {
                 if (view instanceof TextView) {
                     ((TextView) view).setTextColor(Color.parseColor(et.getText().toString()));
+                    ((TextView) view).setTextSize(Float.parseFloat((et2.getText().toString())));
                 }
             }
         });
         return popupWindow;
+    }
+
+    public int toSp(float px) {
+        float scaledDensity = Hawkeye.getApplication().getResources().getDisplayMetrics().scaledDensity;
+        return (int) (px / scaledDensity);
     }
 
     void dismissPopupIfNeeded() {
@@ -171,7 +197,7 @@ class AttributeViewerView extends FrameLayout {
         rect.bottom = rect.top + view.getMeasuredHeight();
     }
 
-    public void getTargetReact(View target, Rect rect) {
+/*    public void getTargetReact(View target, Rect rect) {
         if (topGap == 0) {
             int[] temp = new int[2];
             MainActivity.getActivity().getWindow().getDecorView().findViewById(android.R.id.content).getLocationInWindow(temp);
@@ -182,5 +208,5 @@ class AttributeViewerView extends FrameLayout {
         rect.top = OUT_LOCATION[1] - topGap;
         rect.right = rect.left + target.getMeasuredWidth();
         rect.bottom = rect.top + target.getMeasuredHeight();
-    }
+    }*/
 }
