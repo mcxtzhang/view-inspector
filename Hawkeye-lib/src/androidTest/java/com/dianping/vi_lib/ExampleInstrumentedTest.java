@@ -1,4 +1,4 @@
-package com.dianping.viewinspector;
+package com.dianping.vi_lib;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.dianping.viewinspector", appContext.getPackageName());
+        assertEquals("com.dianping.vi_lib.test", appContext.getPackageName());
     }
 }

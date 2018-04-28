@@ -1,4 +1,4 @@
-package com.dianping.viewinspector;
+package com.dianping.vi_lib;
 
 import org.junit.Test;
 
