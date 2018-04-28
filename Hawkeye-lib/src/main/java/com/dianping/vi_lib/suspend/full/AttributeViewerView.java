@@ -8,6 +8,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.PopupWindowCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,7 +21,10 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.dianping.vi_lib.Hawkeye;
+import com.dianping.vi_lib.inspector.AttributeShowModel;
 import com.dianping.vi_lib.suspend.ViewUtils;
+
+import java.util.List;
 
 
 class AttributeViewerView extends FrameLayout {
@@ -129,7 +134,7 @@ class AttributeViewerView extends FrameLayout {
         LinearLayout detailList = new LinearLayout(context);
         detailList.setOrientation(LinearLayout.VERTICAL);
 
-        LinearLayout line = new LinearLayout(context);
+/*        LinearLayout line = new LinearLayout(context);
         TextView detailView = new TextView(view.getContext());
         final EditText et = new EditText(context);
 
@@ -173,14 +178,46 @@ class AttributeViewerView extends FrameLayout {
         line3.addView(detailView3);
         line3.addView(et3);
 
-        detailList.addView(line3);
+        detailList.addView(line3);*/
+
+
+        List<AttributeShowModel> attributesByView = Hawkeye.getAttributesByView(view);
+        if (attributesByView!=null){
+            for (final AttributeShowModel attributeShowModel : attributesByView) {
+                LinearLayout line3 = new LinearLayout(context);
+                TextView detailView3 = new TextView(view.getContext());
+                final EditText et3 = new EditText(context);
+                detailView3.setText(attributeShowModel.label());
+                et3.setText(attributeShowModel.editLabel());
+                et3.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        attributeShowModel.onAttributeChanged(s.toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+                line3.addView(detailView3);
+                line3.addView(et3);
+
+                detailList.addView(line3);
+            }
+        }
 
 
         final PopupWindow popupWindow = new PopupWindow(detailList, width, height);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#737373")));
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+/*        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 if (view instanceof TextView) {
@@ -189,7 +226,7 @@ class AttributeViewerView extends FrameLayout {
                     ((TextView) view).setText(((et3.getText().toString())));
                 }
             }
-        });
+        });*/
         return popupWindow;
     }
 

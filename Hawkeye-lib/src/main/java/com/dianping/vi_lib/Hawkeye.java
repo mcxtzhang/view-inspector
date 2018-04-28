@@ -3,6 +3,14 @@ package com.dianping.vi_lib;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.view.View;
+
+import com.dianping.vi_lib.inspector.AttributeShowModel;
+import com.dianping.vi_lib.inspector.IAttributes;
+import com.dianping.vi_lib.inspector.TextViewAttributes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zhangxutong on 2018/4/28.
@@ -62,4 +70,18 @@ public class Hawkeye {
         sApplication = application;
     }
 
+    static List<IAttributes> sIAttributesList = new ArrayList<>();
+
+    static {
+        sIAttributesList.add(new TextViewAttributes());
+    }
+
+    public static List<AttributeShowModel> getAttributesByView(View view) {
+        for (IAttributes iAttributes : sIAttributesList) {
+            if (iAttributes.accept(view)) {
+                return iAttributes.attributes();
+            }
+        }
+        return null;
+    }
 }
