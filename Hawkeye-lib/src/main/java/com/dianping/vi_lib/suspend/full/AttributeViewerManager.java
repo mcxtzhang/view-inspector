@@ -1,4 +1,4 @@
-package com.dianping.viewinspector.suspend.full;
+package com.dianping.vi_lib.suspend.full;
 
 import android.content.Context;
 import android.view.View;

@@ -14,8 +14,8 @@ import android.util.Log;
  * Created by zhangxutong on 2018/4/28.
  */
 
-public class ViewInspectorInitProvider extends ContentProvider {
-    private static final String TAG = ViewInspectorInitProvider.class.getSimpleName();
+public class HawkeyeInitProvider extends ContentProvider {
+    private static final String TAG = HawkeyeInitProvider.class.getSimpleName();
 
     @Override
     public boolean onCreate() {

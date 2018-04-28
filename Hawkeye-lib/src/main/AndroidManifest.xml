@@ -3,8 +3,10 @@
 
     <application>
         <provider
-            android:name=".ViewInspectorInitProvider"
+            android:name=".HawkeyeInitProvider"
             android:authorities="${applicationId}.ViewInspectorInitProvider"
             android:exported="false" />
+        <service android:name=".suspend.DebugSuspendViewService" />
+
     </application>
 </manifest>

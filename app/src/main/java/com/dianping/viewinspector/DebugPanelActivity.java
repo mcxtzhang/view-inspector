@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.dianping.viewinspector.suspend.DebugSuspendViewService;
-import com.dianping.viewinspector.suspend.ServiceForegroundHelper;
+import com.dianping.vi_lib.suspend.DebugSuspendViewService;
+import com.dianping.vi_lib.suspend.ServiceForegroundHelper;
 
 public class DebugPanelActivity extends AppCompatActivity {
 

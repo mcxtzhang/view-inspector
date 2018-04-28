@@ -1,4 +1,4 @@
-package com.dianping.viewinspector.suspend;
+package com.dianping.vi_lib.suspend;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;

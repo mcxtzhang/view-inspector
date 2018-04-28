@@ -1,4 +1,4 @@
-package com.dianping.viewinspector.suspend.full;
+package com.dianping.vi_lib.suspend.full;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -19,7 +19,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.dianping.vi_lib.Hawkeye;
-import com.dianping.viewinspector.suspend.ViewUtils;
+import com.dianping.vi_lib.suspend.ViewUtils;
 
 
 class AttributeViewerView extends FrameLayout {
@@ -151,13 +151,30 @@ class AttributeViewerView extends FrameLayout {
         if (view instanceof TextView) {
             detailView2.setText("TextSize");
             float textSize = ((TextView) view).getTextSize();
-            et2.setText(toSp(textSize)+"");
+            et2.setText(toSp(textSize) + "");
         } else {
             detailView2.setText("fasdas");
         }
         line2.addView(detailView2);
         line2.addView(et2);
         detailList.addView(line2);
+
+
+        LinearLayout line3 = new LinearLayout(context);
+        TextView detailView3 = new TextView(view.getContext());
+        final EditText et3 = new EditText(context);
+
+        if (view instanceof TextView) {
+            detailView3.setText("Text");
+            et3.setText(((TextView) view).getText());
+        } else {
+            detailView3.setText("fasdas");
+        }
+        line3.addView(detailView3);
+        line3.addView(et3);
+
+        detailList.addView(line3);
+
 
         final PopupWindow popupWindow = new PopupWindow(detailList, width, height);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#737373")));
@@ -169,6 +186,7 @@ class AttributeViewerView extends FrameLayout {
                 if (view instanceof TextView) {
                     ((TextView) view).setTextColor(Color.parseColor(et.getText().toString()));
                     ((TextView) view).setTextSize(Float.parseFloat((et2.getText().toString())));
+                    ((TextView) view).setText(((et3.getText().toString())));
                 }
             }
         });

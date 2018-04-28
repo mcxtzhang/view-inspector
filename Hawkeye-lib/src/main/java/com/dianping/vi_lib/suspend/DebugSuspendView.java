@@ -1,4 +1,4 @@
-package com.dianping.viewinspector.suspend;
+package com.dianping.vi_lib.suspend;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dianping.viewinspector.R;
-import com.dianping.viewinspector.suspend.full.AttributeViewerManager;
+import com.dianping.vi_lib.R;
+import com.dianping.vi_lib.suspend.full.AttributeViewerManager;
 
 import java.lang.reflect.Field;
 import java.util.Map;

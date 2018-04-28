@@ -1,4 +1,4 @@
-package com.dianping.viewinspector.suspend;
+package com.dianping.vi_lib.suspend;
 
 import android.app.Notification;
 import android.app.Service;
