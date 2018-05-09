@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.dianping.vi_lib.inspector.AttributeShowModel;
+import com.dianping.vi_lib.inspector.EditTextAttributes;
 import com.dianping.vi_lib.inspector.IAttributes;
 import com.dianping.vi_lib.inspector.TextViewAttributes;
 
@@ -73,6 +74,7 @@ public class Hawkeye {
     static List<IAttributes> sIAttributesList = new ArrayList<>();
 
     static {
+        sIAttributesList.add(new EditTextAttributes());
         sIAttributesList.add(new TextViewAttributes());
     }
 

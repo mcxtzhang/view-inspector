@@ -134,53 +134,6 @@ class AttributeViewerView extends FrameLayout {
         LinearLayout detailList = new LinearLayout(context);
         detailList.setOrientation(LinearLayout.VERTICAL);
 
-/*        LinearLayout line = new LinearLayout(context);
-        TextView detailView = new TextView(view.getContext());
-        final EditText et = new EditText(context);
-
-        if (view instanceof TextView) {
-            detailView.setText("TextColors");
-            int textColor = ((TextView) view).getCurrentTextColor();
-            et.setText("#" + Integer.toHexString(textColor));
-        } else {
-            detailView.setText("fasdas");
-        }
-        line.addView(detailView);
-        line.addView(et);
-        detailList.addView(line);
-
-        LinearLayout line2 = new LinearLayout(context);
-        TextView detailView2 = new TextView(view.getContext());
-        final EditText et2 = new EditText(context);
-
-        if (view instanceof TextView) {
-            detailView2.setText("TextSize");
-            float textSize = ((TextView) view).getTextSize();
-            et2.setText(toSp(textSize) + "");
-        } else {
-            detailView2.setText("fasdas");
-        }
-        line2.addView(detailView2);
-        line2.addView(et2);
-        detailList.addView(line2);
-
-
-        LinearLayout line3 = new LinearLayout(context);
-        TextView detailView3 = new TextView(view.getContext());
-        final EditText et3 = new EditText(context);
-
-        if (view instanceof TextView) {
-            detailView3.setText("Text");
-            et3.setText(((TextView) view).getText());
-        } else {
-            detailView3.setText("fasdas");
-        }
-        line3.addView(detailView3);
-        line3.addView(et3);
-
-        detailList.addView(line3);*/
-
-
         List<AttributeShowModel> attributesByView = Hawkeye.getAttributesByView(view);
         if (attributesByView!=null){
             for (final AttributeShowModel attributeShowModel : attributesByView) {
@@ -217,22 +170,7 @@ class AttributeViewerView extends FrameLayout {
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#737373")));
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
-/*        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                if (view instanceof TextView) {
-                    ((TextView) view).setTextColor(Color.parseColor(et.getText().toString()));
-                    ((TextView) view).setTextSize(Float.parseFloat((et2.getText().toString())));
-                    ((TextView) view).setText(((et3.getText().toString())));
-                }
-            }
-        });*/
         return popupWindow;
-    }
-
-    public int toSp(float px) {
-        float scaledDensity = Hawkeye.getApplication().getResources().getDisplayMetrics().scaledDensity;
-        return (int) (px / scaledDensity);
     }
 
     void dismissPopupIfNeeded() {

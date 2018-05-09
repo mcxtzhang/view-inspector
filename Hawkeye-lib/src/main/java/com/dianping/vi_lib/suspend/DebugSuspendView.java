@@ -12,7 +12,6 @@ import com.dianping.vi_lib.R;
 import com.dianping.vi_lib.suspend.full.AttributeViewerManager;
 
 import java.lang.reflect.Field;
-import java.util.Map;
 
 public class DebugSuspendView extends LinearLayout {
 
@@ -78,43 +77,6 @@ public class DebugSuspendView extends LinearLayout {
 
     private TextView mContentTv;
 
-    private UpdateContentRunnable mUpdateContentRunnable;
-
-    private ResetContentRunnable mResetContentRunnable;
-
-    private static class UpdateContentRunnable implements Runnable {
-
-        TextView contentTv;
-        String content;
-
-        public UpdateContentRunnable(TextView contentTv) {
-            this.contentTv = contentTv;
-            this.content = "";
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        @Override
-        public void run() {
-            contentTv.setText(content);
-        }
-    }
-
-    private static class ResetContentRunnable implements Runnable {
-        TextView contentTv;
-
-        public ResetContentRunnable(TextView contentTv) {
-            this.contentTv = contentTv;
-        }
-
-        @Override
-        public void run() {
-            contentTv.setText("adadasdasdasd");
-        }
-    }
-
     public DebugSuspendView(final Context context) {
         super(context);
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -127,28 +89,7 @@ public class DebugSuspendView extends LinearLayout {
 
         screenWidth = windowManager.getDefaultDisplay().getWidth();
         screenHeight = windowManager.getDefaultDisplay().getHeight();
-
-        mUpdateContentRunnable = new UpdateContentRunnable(mContentTv);
-        mResetContentRunnable = new ResetContentRunnable(mContentTv);
     }
-
-    public void updateContent(Map<String, String> monitorDatas) {
-        if (null == monitorDatas) return;
-        final StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String> entry : monitorDatas.entrySet()) {
-            sb.append(entry.getKey())
-                    .append(":")
-                    .append(entry.getValue());
-        }
-        mContentTv.removeCallbacks(mResetContentRunnable);
-        mUpdateContentRunnable.setContent(sb.toString());
-        mContentTv.post(mUpdateContentRunnable);
-        mContentTv.postDelayed(mResetContentRunnable, 5000);
-
-/*        viewWidth = mContentTv.getMeasuredWidth();
-        viewHeight = mContentTv.getMeasuredHeight();*/
-    }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -170,17 +111,14 @@ public class DebugSuspendView extends LinearLayout {
                 updateViewPosition();
                 break;
             case MotionEvent.ACTION_UP:
-                touchEnd();
                 // 如果手指离开屏幕时，xDownInScreen和xInScreen相等，且yDownInScreen和yInScreen相等，则视为触发了单击事件。
                 if (Math.abs(xDownInScreen - xInScreen) < 3
                         && Math.abs(yDownInScreen - yInScreen) < 3) {
-                    openBigWindow();
+                    onClick();
                 }
-                if (AttributeViewerManager.INSTANCE.isWindowShowing()) {
-                    AttributeViewerManager.INSTANCE.removeSmallWindow(getContext());
-                } else {
-                    AttributeViewerManager.INSTANCE.createSmallWindow(getContext());
-                }
+                touchEnd();
+
+
                 break;
             default:
                 break;
@@ -229,13 +167,14 @@ public class DebugSuspendView extends LinearLayout {
     /**
      * 打开大悬浮窗，同时关闭小悬浮窗。
      */
-    private void openBigWindow() {
-//        Intent intent = new Intent("com.dianping.action.VIEW");
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        intent.setData(Uri.parse("dianping://debugpanel"));
-//        DPApplication.instance().startActivity(intent);
-        // DebugSuspendViewManager.createBigWindow(getContext());
-        // DebugSuspendViewManager.removeSmallWindow(getContext());
+    private void onClick() {
+        if (AttributeViewerManager.INSTANCE.isWindowShowing()) {
+            AttributeViewerManager.INSTANCE.removeSmallWindow(getContext());
+            mContentTv.setText("点击开启鹰眼");
+        } else {
+            AttributeViewerManager.INSTANCE.createSmallWindow(getContext());
+            mContentTv.setText("点击关闭鹰眼");
+        }
     }
 
     /**

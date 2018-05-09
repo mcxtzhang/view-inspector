@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Hawkeye-lib/vi-lib.iml" filepath="$PROJECT_DIR$/Hawkeye-lib/vi-lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Hawkeye-lib/Hawkeye-lib.iml" filepath="$PROJECT_DIR$/Hawkeye-lib/Hawkeye-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/ViewInspector.iml" filepath="$PROJECT_DIR$/ViewInspector.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Hawkeye-lib/vi-lib.iml" filepath="$PROJECT_DIR$/Hawkeye-lib/vi-lib.iml" />
     </modules>
   </component>
 </project>

@@ -8,8 +8,6 @@ import android.view.Gravity;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
-import java.util.Map;
-
 
 public enum DebugSuspendViewManager {
     INSTANCE;
@@ -92,24 +90,6 @@ public enum DebugSuspendViewManager {
             smallWindow = null;
         }
     }
-
-
-    final Map<String, String> mMonitorDatas = new android.support.v4.util.ArrayMap<>();
-
-    public void updateFps(float fps) {
-        try {
-            mMonitorDatas.put("Fps", String.valueOf(fps));
-        } catch (Exception e) {
-        }
-        updateViewContent(mMonitorDatas);
-    }
-
-    public void updateViewContent(Map<String, String> monitorDatas) {
-        if (smallWindow != null) {
-            smallWindow.updateContent(monitorDatas);
-        }
-    }
-
 
     boolean isWindowShowing() {
         return smallWindow != null;
