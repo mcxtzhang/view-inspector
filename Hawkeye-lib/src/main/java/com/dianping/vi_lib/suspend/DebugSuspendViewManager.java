@@ -52,7 +52,7 @@ public enum DebugSuspendViewManager {
                 smallWindowParams.gravity = Gravity.START | Gravity.TOP;
                 smallWindowParams.width = DebugSuspendView.viewWidth;
                 smallWindowParams.height = DebugSuspendView.viewHeight;
-                smallWindowParams.x = 0;
+                smallWindowParams.x = screenWidth - ViewUtils.dip2px(context, 100);
                 smallWindowParams.y = screenHeight / 2;
             }
         }

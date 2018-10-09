@@ -1,11 +1,7 @@
 package com.dianping.viewinspector;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
-import com.dianping.vi_lib.suspend.DebugSuspendViewService;
-import com.dianping.vi_lib.suspend.ServiceForegroundHelper;
 
 public class DebugPanelActivity extends AppCompatActivity {
 
@@ -13,7 +9,6 @@ public class DebugPanelActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug_panel);
-        ServiceForegroundHelper.startService(this, new Intent(this,
-                DebugSuspendViewService.class));
+
     }
 }
