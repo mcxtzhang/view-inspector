@@ -14,9 +14,11 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -91,8 +93,6 @@ class AttributeViewerView extends FrameLayout {
     }
 
     private View findTarget(View root, float x, float y) {
-        // we consider the "best target" to be the view width the smallest width / height
-        // whose location on screen is within the given touch area.
         View bestTarget = root;
         if (root instanceof ViewGroup) {
             ViewGroup parent = (ViewGroup) root;
@@ -131,45 +131,89 @@ class AttributeViewerView extends FrameLayout {
         final int height = getMeasuredHeight() / 2;
 //        final AttributeDetailView detailView = new AttributeDetailView(context);
 //        detailView.setTarget(view);
-        LinearLayout detailList = new LinearLayout(context);
-        detailList.setOrientation(LinearLayout.VERTICAL);
 
-        List<AttributeShowModel> attributesByView = Hawkeye.getAttributesByView(view);
-        if (attributesByView!=null){
-            for (final AttributeShowModel attributeShowModel : attributesByView) {
-                LinearLayout line3 = new LinearLayout(context);
-                TextView detailView3 = new TextView(view.getContext());
-                final EditText et3 = new EditText(context);
-                detailView3.setText(attributeShowModel.label());
-                et3.setText(attributeShowModel.editLabel());
-                et3.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//        LinearLayout detailList = new LinearLayout(context);
+//        detailList.setOrientation(LinearLayout.VERTICAL);
+        ListView listView = new ListView(context);
 
+        final List<AttributeShowModel> attributesByView = Hawkeye.getAttributesByView(view);
+        if (attributesByView != null) {
+            listView.setAdapter(new BaseAdapter() {
+                @Override
+                public int getCount() {
+                    return attributesByView.size();
+                }
+
+                @Override
+                public Object getItem(int position) {
+                    return attributesByView.get(position);
+                }
+
+                @Override
+                public long getItemId(int position) {
+                    return position;
+                }
+
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    final AttributeShowModel attributeShowModel = attributesByView.get(position);
+                    TextView labelTv = null;
+                    EditText valueEt = null;
+                    LinearLayout itemView = null;
+                    if (convertView == null) {
+                        itemView = new LinearLayout(context);
+                        labelTv = new TextView(view.getContext());
+                        valueEt = new EditText(context);
+
+                        itemView.addView(labelTv);
+                        itemView.addView(valueEt);
+                    } else {
+                        itemView = (LinearLayout) convertView;
+                        labelTv = (TextView) itemView.getChildAt(0);
+                        valueEt = (EditText) itemView.getChildAt(1);
                     }
+                    labelTv.setText(attributeShowModel.label());
+                    valueEt.setText(attributeShowModel.editLabel());
+                    valueEt.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        attributeShowModel.onAttributeChanged(s.toString());
-                    }
+                        }
 
-                    @Override
-                    public void afterTextChanged(Editable s) {
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            attributeShowModel.onAttributeChanged(s.toString());
+                        }
 
-                    }
-                });
-                line3.addView(detailView3);
-                line3.addView(et3);
+                        @Override
+                        public void afterTextChanged(Editable s) {
 
-                detailList.addView(line3);
-            }
+                        }
+                    });
+
+                    return itemView;
+                }
+            });
         }
 
 
-        final PopupWindow popupWindow = new PopupWindow(detailList, width, height);
+        final PopupWindow popupWindow = new PopupWindow(listView, width, height);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#737373")));
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getScreenLocation(view, outRect);
+                        invalidate();
+                    }
+                }, 500);
+
+            }
+        });
         return popupWindow;
     }
 

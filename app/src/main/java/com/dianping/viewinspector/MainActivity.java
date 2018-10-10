@@ -18,8 +18,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ServiceForegroundHelper.startService(this, new Intent(this,
-                DebugSuspendViewService.class));
+        if (BuildConfig.DEBUG) {
+            ServiceForegroundHelper.startService(this, new Intent(this,
+                    DebugSuspendViewService.class));
+        }
 
         findViewById(R.id.btnOpen).setOnClickListener(new View.OnClickListener() {
             @Override
